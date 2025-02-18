@@ -1,2 +1,8 @@
 #!/bin/bash
 
+if command -v gofmt &> /dev/null; then
+    echo "Found"
+else
+    echo "Not found"
+fi
+

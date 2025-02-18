@@ -1,2 +1,49 @@
 #!/bin/bash
 
+# get files changed in latest commit
+FILES="main.go doc.py" # $(git diff --name-only --cached)
+MISSING=""
+
+for FILE in $FILES; do
+    EXT="${FILE##*.}"
+
+    # Apply formatters based on file extension
+    case "$EXT" in
+        go) 
+            if ! command -v gofmt &> /dev/null; then 
+               MISSING="$MISSING\n- gofmt"
+            fi 
+            gofmt -w "$FILE";;
+        py)
+            if ! command -v black &> /dev/null; then 
+               MISSING="$MISSING\n- black"
+            fi
+            black "$FILE" ;;
+        js|ts) 
+            if ! command -v prettier &> /dev/null; then 
+               MISSING="$MISSING\n- prettier"
+            fi
+            prettier --write "$FILE" ;;
+        java) 
+            if ! command -v google-java-format &> /dev/null; then 
+               MISSING="$MISSING\n- google-java-format"
+            fi
+            google-java-format -i "$FILE" ;;
+        rs) 
+            if ! command -v rustfmt &> /dev/null; then 
+               MISSING="$MISSING\n- rustfmt"
+            fi 
+            rustfmt "$FILE" ;;
+        c|cpp) 
+            if ! command -v clang-format &> /dev/null; then 
+               MISSING="$MISSING\n- clang-format"
+            fi
+            clang-format "$FILE" ;;
+        *) echo "No formatter found for $FILE" ;;
+    esac
+done
+
+if ! [ -z "${MISSING}" ]; then
+    echo "Error: Required formatters missing: $MISSING"
+fi
+
