@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # get files changed in latest commit
-FILES="main.go doc.py" # $(git diff --name-only --cached)
+FILES=$(git diff --name-only --cached)
 MISSING=""
 
 for FILE in $FILES; do
