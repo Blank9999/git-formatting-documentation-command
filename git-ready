@@ -29,14 +29,14 @@ done
 
 git format
 
-# change git document behaviour
+# Change git document behaviour
 if [[ "$c_flag" == true ]]; then
     git doc -c
 else 
     git doc
 fi
 
-# commit based on message flag
+# Commit based on message flag
 if [[ -n "$message" ]]; then
     git commit
 else 
