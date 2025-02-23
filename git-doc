@@ -10,23 +10,21 @@ while getopts "c" opt; do
   esac
 done
 
-FILES="main.go" # $(git diff --name-only --cached)
+FILES=$(git diff --name-only --cached)
 
-for FILE in $FILES; do
-    python3 doc.py understand_file "${FILE}"
-done
-    
+python3 doc.py "${FILES}"
+
 for FILE in $FILES; do
     NAME="${FILE%.*}"
     EXT="${FILE##*.}"
-    python3 doc.py document_file "${FILE}"
 
     if $c_flag; then
         NEW_FILE="${NAME}_documented.${EXT}"
-        TMP_FILE = "${NAME}_temp.${EXT}"
+        TMP_FILE="${NAME}_temp.${EXT}"
         sdiff "${FILE}" "${NEW_FILE}" -o "${TMP_FILE}"
         rm "${FILE}"
         rm "${NEW_FILE}"
         mv "${TMP_FILE}" "${FILE}"
     fi
 done
+
