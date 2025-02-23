@@ -15,6 +15,7 @@ Run all the commands below to get the new git commands; make sure to change the 
 sudo mv git-<custom_command> /usr/local/bin/
 sudo chmod a+x git-<custom_command>
 ```
+Make sure to define your API Keys for OpenAI compatible chat-completion objects in the ```.env``` file. You can edit this functionality in the git-doc, if you would like to use other LLMs.
 
 ## Use cases:
 This is how you can use each of the commands to execute specific tasks
