@@ -1,10 +1,6 @@
-# doc.py
-
 import os
 from dotenv import load_dotenv
-from groq import Groq
 from openai import OpenAI
-# import openai
 import sys
 
 load_dotenv()

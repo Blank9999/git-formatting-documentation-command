@@ -1,10 +1,45 @@
 #!/bin/bash
 
-git format
-git doc
+# Initialize variables for the flags and options
+message=""
+c_flag=false
 
-if [[ "$1" == "-m" && -n "$2" ]]; then
-    git commit -m "$2"
-else
-    git commit
+# Parse the flags and their options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -m)  # -m flag with a message option
+            if [[ -n "$2" ]]; then
+                message="$2"
+                shift 2  # Move past the flag and its argument
+            else
+                echo "Error: -m flag requires a message."
+                exit 1
+            fi
+            ;;
+        -c)  # -c flag (for git doc file)
+            c_flag=true
+            shift 1  # Move past the flag
+            ;;
+        *)  # Unrecognized flag or argument
+            echo "Error: Unrecognized option '$1'"
+            exit 1
+            ;;
+    esac
+done
+
+git format
+
+# change git document behaviour
+if [[ "$c_flag" == true ]]; then
+    git doc -c
+else 
+    git doc
 fi
+
+# commit based on message flag
+if [[ -n "$message" ]]; then
+    git commit
+else 
+    git commit -m "$message"
+fi
+
